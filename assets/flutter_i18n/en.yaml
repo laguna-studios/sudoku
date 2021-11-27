@@ -1,0 +1,16 @@
+fortsetzen: Continue
+start: Start
+schwierigkeitsgrad: Difficulty
+einsteiger: Beginner
+leicht: Easy
+fortgeschritten: Advanced
+schwer: Hard
+experte: Expert
+genie: Genius
+pause: Pause
+
+dialog:
+  titel: Sudoku solved!
+  text: Congratulations.
+  fertig: Quit
+  weiter: Next
