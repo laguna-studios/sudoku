@@ -165,21 +165,21 @@ class _BottomPartState extends State<BottomPart> {
   late double difficulty = widget.difficulty;
 
   Color get sliderColor {
-    if (difficulty < 0.2) return Colors.green;
-    if (difficulty < 0.4) return Colors.green.shade300;
-    if (difficulty < 0.6) return Colors.yellow;
-    if (difficulty < 0.8) return Colors.orange;
-    if (difficulty < 1) return Colors.red;
+    double frac = 1 / 4;
+
+    if (difficulty <= 1 * frac) return Colors.green;
+    if (difficulty <= 2 * frac) return Colors.yellow;
+    if (difficulty <= 3 * frac) return Colors.red;
     return Colors.purple;
   }
 
   String get difficultyName {
-    if (difficulty < 0.2) return "einsteiger";
-    if (difficulty < 0.4) return "leicht";
-    if (difficulty < 0.6) return "fortgeschritten";
-    if (difficulty < 0.8) return "schwer";
-    if (difficulty < 1) return "experte";
-    return "genie";
+    double frac = 1 / 4;
+
+    if (difficulty <= 1 * frac) return "einsteiger";
+    if (difficulty <= 2 * frac) return "leicht";
+    if (difficulty <= 3 * frac) return "fortgeschritten";
+    return "experte";
   }
 
   Widget menuWidget(BuildContext context) {

@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:sudoku_solver_generator/sudoku_solver_generator.dart';
+import 'package:qqwing/qqwing.dart';
 
 // ignore: must_be_immutable
 class AppState extends Equatable {
@@ -21,22 +21,22 @@ class AppState extends Equatable {
 
   final bool changeFlag;
 
-  int get difficultyEmptySpaces {
-    if (difficulty < 0.2) return 18;
-    if (difficulty < 0.4) return 27;
-    if (difficulty < 0.6) return 36;
-    if (difficulty < 0.8) return 45;
-    if (difficulty < 1) return 50;
-    return 54;
+  String get difficultyName {
+    double frac = 1 / 4;
+
+    if (difficulty <= 1 * frac) return "einsteiger";
+    if (difficulty <= 2 * frac) return "leicht";
+    if (difficulty <= 3 * frac) return "fortgeschritten";
+    return "expert";
   }
 
-  String get difficultyName {
-    if (difficulty < 0.2) return "einsteiger";
-    if (difficulty < 0.4) return "leicht";
-    if (difficulty < 0.6) return "fortgeschritten";
-    if (difficulty < 0.8) return "schwer";
-    if (difficulty < 1) return "experte";
-    return "genie";
+  int get difficultyInt {
+    double frac = 1 / 4;
+
+    if (difficulty <= 1 * frac) return 0;
+    if (difficulty <= 2 * frac) return 1;
+    if (difficulty <= 3 * frac) return 2;
+    return 3;
   }
 
   bool get done => listEquals(grid, solution);
@@ -159,12 +159,11 @@ class AppCubit extends HydratedCubit<AppState> {
   Future<void> newGame(double difficulty) async {
     state.difficulty = difficulty;
 
-    var sudokuGen = SudokuGenerator(emptySquares: state.difficultyEmptySpaces);
+    QqwingSudoku sudoku = await Qqwing.generateSudoku(state.difficultyInt);
 
-    List<int> grid = sudokuGen.newSudoku.expand((element) => element).toList();
+    List<int> grid = sudoku.grid;
     List<int> solution =
-        sudokuGen.newSudokuSolved.expand((element) => element).toList();
-    ;
+        sudoku.solution;
     Set<int> given = {};
 
     assert(grid.length == solution.length && grid.length == 81);
